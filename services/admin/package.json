@@ -1,0 +1,51 @@
+{
+  "name": "admin",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "webpack serve --open --env mode=development",
+    "build:dev": "webpack --env mode=development",
+    "build:prod": "webpack --env mode=production",
+    "build:desktop": "webpack --env mode=production platform=desktop",
+    "build:mobile": "webpack --env mode=production platform=mobile",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@packages/shared": "*",
+    "@packages/build-config": "*",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.28.0",
+    "@babel/preset-react": "^7.27.1",
+    "@babel/preset-typescript": "^7.27.1",
+    "@pmmmwh/react-refresh-webpack-plugin": "^0.6.1",
+    "@svgr/webpack": "^8.1.0",
+    "@types/babel__core": "^7.20.5",
+    "@types/node": "^24.1.0",
+    "@types/react": "^19.1.9",
+    "@types/react-dom": "^19.1.7",
+    "@types/webpack": "^5.28.5",
+    "@types/webpack-bundle-analyzer": "^4.7.0",
+    "@types/webpack-dev-server": "^4.7.1",
+    "babel-loader": "^10.0.0",
+    "copy-webpack-plugin": "^13.0.0",
+    "css-loader": "^7.1.2",
+    "fork-ts-checker-webpack-plugin": "^9.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "mini-css-extract-plugin": "^2.9.3",
+    "react-refresh": "^0.17.0",
+    "react-refresh-typescript": "^2.0.10",
+    "sass": "^1.90.0",
+    "sass-loader": "^16.0.5",
+    "style-loader": "^4.0.0",
+    "ts-loader": "^9.5.2",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.9.2",
+    "webpack": "^5.101.0",
+    "webpack-bundle-analyzer": "^4.10.2",
+    "webpack-cli": "^6.0.1",
+    "webpack-dev-server": "^5.2.2"
+  }
+}
