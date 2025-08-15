@@ -1,0 +1,15 @@
+@use "../../../../../app/App.scss" as main;
+
+.toolbar {
+  width: 100%;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  background-color: main.$toolbar-background;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  z-index: 1;
+  align-items: center;
+  position: absolute;
+  top: 0;
+}

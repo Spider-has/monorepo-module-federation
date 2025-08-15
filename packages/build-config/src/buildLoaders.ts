@@ -1,29 +1,46 @@
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import { ModuleOptions } from "webpack";
-import { BuildOptions } from "./types/types";
 import ReactRefreshTypeScript from "react-refresh-typescript";
-// import { buildBabelLoader } from "./babel/buildBabelLoader";
+import { BuildOptions } from "./types/types";
 
 export const buildLoaders = (options: BuildOptions): ModuleOptions["rules"] => {
-  const isDev = options.mode == "development";
+  const isDev = options.mode === "development";
 
   const cssLoaderWithModule = {
     loader: "css-loader",
     options: {
+      esModule: true,
+      sourceMap: isDev,
+
       modules: {
         localIdentName: isDev ? "[path][name]__[local]" : "[hash:base64:8]",
+        exportOnlyLocals: false,
+        mode: "local",
+        namedExport: false,
+        exportLocalsConvention: "camelCase",
       },
     },
   };
 
-  const scssLoader = {
-    test: /\.s[ac]ss$/i,
-    use: [
-      isDev ? "style-loader" : MiniCssExtractPlugin.loader,
-      cssLoaderWithModule,
-      "sass-loader",
-    ],
-  };
+  const scssLoader = [
+    {
+      test: /\.module\.s[ac]ss$/i,
+      use: [
+        isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+        cssLoaderWithModule,
+        "sass-loader",
+      ],
+    },
+    {
+      test: /\.s[ac]ss$/i,
+      exclude: /\.module\.s[ac]ss$/i,
+      use: [
+        isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+        "css-loader",
+        "sass-loader",
+      ],
+    },
+  ];
 
   const assetsLoader = {
     test: /\.(png|jpg|jpeg|gif)$/i,
@@ -69,7 +86,5 @@ export const buildLoaders = (options: BuildOptions): ModuleOptions["rules"] => {
     ],
   };
 
-  // const babelLoader = buildBabelLoader(options);
-
-  return [assetsLoader, scssLoader, svgLoader, tsLoader];
+  return [...scssLoader, svgLoader, tsLoader, assetsLoader];
 };

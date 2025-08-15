@@ -1,0 +1,9 @@
+@use "../../../app/App.scss" as main;
+
+.paintPage {
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  background-color: main.$background-color;
+  color: main.$white-default;
+}

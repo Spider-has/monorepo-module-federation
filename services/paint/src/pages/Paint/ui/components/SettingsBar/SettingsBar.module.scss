@@ -1,0 +1,17 @@
+@use "../../../../../app/App.scss" as main;
+
+.settingsbar {
+  width: 100%;
+  padding: 16px 32px;
+  display: flex;
+  flex-direction: row;
+  background-color: main.$settingsbar-background;
+  box-shadow: 0 5px 15px 0 rgba(0, 0, 0, 0.5);
+  position: absolute;
+  gap: 8px;
+  top: 81px;
+  align-items: center;
+  & label input {
+    margin-left: 10px;
+  }
+}

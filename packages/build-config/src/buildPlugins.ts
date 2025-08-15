@@ -1,13 +1,12 @@
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
-import { Configuration } from "webpack";
-import webpack from "webpack";
-import { BuildOptions } from "./types/types";
+import webpack, { Configuration } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 // import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import path from "path";
 import CopyPlugin from "copy-webpack-plugin";
+import { BuildOptions } from "./types/types";
 
 export const buildPlugins = (
   options: BuildOptions
@@ -25,11 +24,11 @@ export const buildPlugins = (
     // new ForkTsCheckerWebpackPlugin(),
   ];
 
-  if (options.mode == "development") {
+  if (options.mode === "development") {
     plugins.push(new webpack.ProgressPlugin(), new ReactRefreshWebpackPlugin());
   }
 
-  if (options.mode == "production") {
+  if (options.mode === "production") {
     plugins.push(
       new MiniCssExtractPlugin({
         filename: "css/[name].[contenthash:8].css",

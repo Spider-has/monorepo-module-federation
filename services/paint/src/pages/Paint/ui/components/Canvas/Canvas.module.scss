@@ -1,0 +1,13 @@
+@use "../../../../../app/App.scss" as main;
+
+.canvas {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+canvas {
+  border: 1px solid rgb(100, 100, 100);
+  background-color: main.$canvas-background;
+}

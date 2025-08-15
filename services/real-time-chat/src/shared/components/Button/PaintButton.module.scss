@@ -1,0 +1,14 @@
+@use "../../../app/App.scss" as main;
+
+.button {
+  background-color: transparent;
+  border: 1px solid main.$white-default;
+  color: main.$white-default;
+  padding: 8px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  &:hover {
+    transform: scale(1.02, 1.02);
+  }
+}
