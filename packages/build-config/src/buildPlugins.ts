@@ -6,11 +6,27 @@ import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import path from "path";
 import CopyPlugin from "copy-webpack-plugin";
+import dotenv from "dotenv";
+import dotenvExpand from "dotenv-expand";
 import { BuildOptions } from "./types/types";
+
+type evnKeys = {
+  [key: string]: string;
+};
 
 export const buildPlugins = (
   options: BuildOptions
 ): Configuration["plugins"] => {
+  const envKeys: evnKeys = {};
+  if (options.paths.envPath) {
+    let env = dotenv.config({ path: options.paths.envPath });
+    env = dotenvExpand.expand(env);
+    Object.keys(env.parsed).forEach((key) => {
+      envKeys[`process.env.${key}`] = JSON.stringify(env.parsed[key]);
+    });
+  }
+  console.log(envKeys);
+
   const plugins: Configuration["plugins"] = [
     new HtmlWebpackPlugin({
       template: options.paths.html,
@@ -20,6 +36,7 @@ export const buildPlugins = (
     new webpack.DefinePlugin({
       __PLATFORM__: JSON.stringify(options.platfrom),
       __ENV__: JSON.stringify(options.mode),
+      ...envKeys,
     }),
     // new ForkTsCheckerWebpackPlugin(),
   ];

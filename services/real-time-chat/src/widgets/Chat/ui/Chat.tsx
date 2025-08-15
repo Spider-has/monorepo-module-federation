@@ -10,21 +10,36 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import {
   addDoc,
   collection,
+  DocumentData,
   orderBy,
+  Query,
   query,
   serverTimestamp,
+  Timestamp,
 } from "firebase/firestore";
 import Card from "@mui/material/Card";
 import Avatar from "@mui/material/Avatar";
 import Typography from "@mui/material/Typography";
+import { CircularProgress } from "@mui/material";
 import { Context } from "@/app/firebase/Context";
+
+type MessageDTO = {
+  uid: string;
+  displayName: string;
+  photoUrl: string;
+  text: string;
+  createdAt: Timestamp;
+};
 
 export function ChatWindowArea() {
   const { auth, firestore } = useContext(Context);
   const [user] = useAuthState(auth);
   const [message, setMessage] = useState("");
-  const [messages, loading] = useCollectionData(
-    query(collection(firestore, "messages"), orderBy("createdAt"))
+  const [messages, loading] = useCollectionData<MessageDTO>(
+    query(collection(firestore, "messages"), orderBy("createdAt")) as Query<
+      MessageDTO,
+      DocumentData
+    >
   );
 
   console.log(messages);
@@ -60,24 +75,38 @@ export function ChatWindowArea() {
           sx={{ border: "1px solid #000", overflowY: "auto", height: "100%" }}
         >
           {!loading &&
-            messages.map((el) => (
-              <Card
-                sx={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "8px",
-                  padding: "16px",
-                  justifySelf: user.uid === el.uid ? "flex-end" : "flex-start",
-                }}
-              >
-                <Box display="flex" gap="8px">
-                  <Avatar src={el.photoURL} />
-                  <Typography variant="h5">{el.displayName}</Typography>
-                  <Typography variant="body2">{}</Typography>
-                </Box>
-                <Typography variant="body1">{el.text}</Typography>
-              </Card>
-            ))}
+            messages.map((el) => {
+              if (el.createdAt) {
+                return (
+                  <Card
+                    key={el.createdAt.toString()}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "8px",
+                      padding: "16px",
+                      justifySelf:
+                        user.uid === el.uid ? "flex-end" : "flex-start",
+                    }}
+                  >
+                    <Box display="flex" gap="8px">
+                      <Avatar src={el.photoUrl} />
+                      <Typography variant="h5">{el.displayName}</Typography>
+                      <Typography variant="body2">
+                        {el.createdAt.toDate().toLocaleString("ru", {
+                          day: "2-digit",
+                          month: "short",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </Typography>
+                    </Box>
+                    <Typography variant="body1">{el.text}</Typography>
+                  </Card>
+                );
+              }
+              return <CircularProgress key={crypto.randomUUID()} />;
+            })}
         </Box>
         <Grid
           sx={{

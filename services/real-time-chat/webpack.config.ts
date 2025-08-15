@@ -1,4 +1,9 @@
-import { BuildMode, BuildPlatform, buildWebpack } from "@packages/build-config";
+import {
+  BuildMode,
+  BuildPaths,
+  BuildPlatform,
+  buildWebpack,
+} from "@packages/build-config";
 import path from "path";
 import webpack from "webpack";
 import packageJson from "./package.json";
@@ -11,14 +16,17 @@ export type EnvOptions = {
 };
 
 export default (env: EnvOptions) => {
-  const paths = {
+  const paths: BuildPaths = {
     entry: path.resolve(__dirname, "src", "index.tsx"),
     output: path.resolve(__dirname, "build"),
     public: path.resolve(__dirname, "public"),
     html: path.resolve(__dirname, "public", "index.html"),
     src: path.resolve(__dirname, "src"),
+    envPath:
+      env.mode === "development"
+        ? path.resolve(__dirname, ".env")
+        : path.resolve(__dirname, ".env.production"),
   };
-
   const additional = {
     analyzer: env.analyzer ?? false,
   };
