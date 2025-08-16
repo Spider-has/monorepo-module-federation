@@ -2,10 +2,8 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
 import webpack, { Configuration } from "webpack";
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
-// import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
 import ReactRefreshWebpackPlugin from "@pmmmwh/react-refresh-webpack-plugin";
 import path from "path";
-import CopyPlugin from "copy-webpack-plugin";
 import dotenv from "dotenv";
 import dotenvExpand from "dotenv-expand";
 import { BuildOptions } from "./types/types";
@@ -25,7 +23,6 @@ export const buildPlugins = (
       envKeys[`process.env.${key}`] = JSON.stringify(env.parsed[key]);
     });
   }
-  console.log(envKeys);
 
   const plugins: Configuration["plugins"] = [
     new HtmlWebpackPlugin({
@@ -50,15 +47,15 @@ export const buildPlugins = (
       new MiniCssExtractPlugin({
         filename: "css/[name].[contenthash:8].css",
         chunkFilename: "css/[name].[contenthash:8].css",
-      }),
-      new CopyPlugin({
-        patterns: [
-          {
-            from: path.resolve(options.paths.public, "locales"),
-            to: path.resolve(options.paths.output, "locales"),
-          },
-        ],
       })
+      // new CopyPlugin({
+      //   patterns: [
+      //     {
+      //       from: path.resolve(options.paths.public, "locales"),
+      //       to: path.resolve(options.paths.output, "locales"),
+      //     },
+      //   ],
+      // })
     );
     if (options.additional.analyzer) plugins.push(new BundleAnalyzerPlugin());
   }

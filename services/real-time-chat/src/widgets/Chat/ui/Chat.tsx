@@ -3,7 +3,6 @@ import { useCallback, useContext, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -17,13 +16,10 @@ import {
   serverTimestamp,
   Timestamp,
 } from "firebase/firestore";
-import Card from "@mui/material/Card";
-import Avatar from "@mui/material/Avatar";
-import Typography from "@mui/material/Typography";
-import { CircularProgress } from "@mui/material";
 import { Context } from "@/app/firebase/Context";
+import { ChatMessagesArea } from "./components/ChatMessageArea";
 
-type MessageDTO = {
+export type MessageDTO = {
   uid: string;
   displayName: string;
   photoUrl: string;
@@ -60,7 +56,7 @@ export function ChatWindowArea() {
     }
   }, [firestore, message, user.displayName, user.photoURL, user.uid]);
   return (
-    <Container sx={{ flexGrow: 1, padding: "32px" }}>
+    <Container sx={{ flexGrow: 1, padding: "32px", height: "100%" }}>
       <Grid
         sx={{
           display: "flex",
@@ -68,46 +64,11 @@ export function ChatWindowArea() {
           flexDirection: "column",
           width: "100%",
           height: "100%",
+          maxHeight: "100%",
           gap: "40px",
         }}
       >
-        <Box
-          sx={{ border: "1px solid #000", overflowY: "auto", height: "100%" }}
-        >
-          {!loading &&
-            messages.map((el) => {
-              if (el.createdAt) {
-                return (
-                  <Card
-                    key={el.createdAt.toString()}
-                    sx={{
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "8px",
-                      padding: "16px",
-                      justifySelf:
-                        user.uid === el.uid ? "flex-end" : "flex-start",
-                    }}
-                  >
-                    <Box display="flex" gap="8px">
-                      <Avatar src={el.photoUrl} />
-                      <Typography variant="h5">{el.displayName}</Typography>
-                      <Typography variant="body2">
-                        {el.createdAt.toDate().toLocaleString("ru", {
-                          day: "2-digit",
-                          month: "short",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
-                      </Typography>
-                    </Box>
-                    <Typography variant="body1">{el.text}</Typography>
-                  </Card>
-                );
-              }
-              return <CircularProgress key={crypto.randomUUID()} />;
-            })}
-        </Box>
+        <ChatMessagesArea loading={loading} messages={messages} user={user} />
         <Grid
           sx={{
             display: "flex",

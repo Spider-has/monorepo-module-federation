@@ -10,10 +10,16 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@packages/shared": "*",
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.1",
+    "@mui/icons-material": "7.3.1",
+    "@mui/material": "7.3.1",
     "@packages/build-config": "*",
+    "@packages/shared": "*",
+    "firebase": "^12.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-firebase-hooks": "^5.1.1",
     "react-router-dom": "^7.8.0"
   },
   "devDependencies": {

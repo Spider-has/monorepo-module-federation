@@ -27,6 +27,7 @@ module.exports = {
     "comma-dangle": "off",
     "react/jsx-one-expression-per-line": "off",
     "operator-linebreak": "off",
+    "object-curly-newline": "off",
   },
   overrides: [
     {

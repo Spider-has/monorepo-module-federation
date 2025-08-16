@@ -39,32 +39,54 @@ export default (env: EnvOptions) => {
     additional,
   });
 
-  if (env.mode === "production") {
-    config.plugins.push(
-      new webpack.container.ModuleFederationPlugin({
-        name: packageJson.name,
-        filename: "remoteEntry.js",
-        exposes: {
-          "./Router": "./src/router/Router.tsx",
+  // if (env.mode === "production") {
+  config.plugins.push(
+    new webpack.container.ModuleFederationPlugin({
+      name: packageJson.name,
+      filename: "remoteEntry.js",
+      exposes: {
+        "./Router": "./src/router/Router.tsx",
+      },
+      shared: {
+        react: {
+          eager: true,
+          requiredVersion: packageJson.dependencies.react,
         },
-        shared: {
-          ...packageJson.dependencies,
-          react: {
-            eager: true,
-            requiredVersion: packageJson.dependencies.react,
-          },
-          "react-router-dom": {
-            eager: true,
-            requiredVersion: packageJson.dependencies["react-router-dom"],
-          },
-          "react-dom": {
-            eager: true,
-            requiredVersion: packageJson.dependencies["react-dom"],
-          },
+        "react-router-dom": {
+          eager: true,
+          requiredVersion: packageJson.dependencies["react-router-dom"],
         },
-      })
-    );
-  }
+        "react-dom": {
+          eager: true,
+          requiredVersion: packageJson.dependencies["react-dom"],
+        },
+        "@mui/material": {
+          singleton: true,
+          eager: true,
+          version: packageJson.dependencies["@mui/material"],
+          requiredVersion: packageJson.dependencies["@mui/material"],
+        },
+        "@mui/icons-material": {
+          singleton: true,
+          eager: true,
+          requiredVersion: packageJson.dependencies["@mui/icons-material"],
+        },
+        "@emotion/react": {
+          singleton: true,
+          eager: true,
+          requiredVersion: packageJson.dependencies["@emotion/react"],
+          import: require.resolve("@emotion/react"),
+        },
+        "@emotion/styled": {
+          singleton: true,
+          eager: true,
+          requiredVersion: packageJson.dependencies["@emotion/styled"],
+          import: require.resolve("@emotion/styled"),
+        },
+      },
+    })
+  );
+  // }
 
   return config;
 };

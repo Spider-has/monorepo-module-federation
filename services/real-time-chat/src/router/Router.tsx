@@ -2,6 +2,7 @@ import { createBrowserRouter, redirect, RouteObject } from "react-router-dom";
 import { AuthPage, ChatPage } from "@/pages";
 import { NavBar } from "@/widgets";
 import { accessTokenKey } from "@/features/GoogleAuth/storage/tokenStorage";
+import { RouterProviderWrapper } from "@/app/App";
 
 function loader() {
   return redirect("/real-time-chat");
@@ -13,36 +14,24 @@ const checkAuth = () => {
   return token ? { isAuthenticated: true } : { isAuthenticated: false };
 };
 
-const authedUserLoader = () => {
-  const { isAuthenticated } = checkAuth();
-  if (!isAuthenticated) {
-    return redirect("/real-time-chat");
-  }
-  return redirect("/real-time-chat/chat");
-};
-
 const indexAuthUserLoader = () => {
   const { isAuthenticated } = checkAuth();
-  if (!isAuthenticated) {
-    return null;
+  if (isAuthenticated) {
+    return redirect("/real-time-chat/chat");
   }
-  return redirect("/real-time-chat/chat");
+  return null;
 };
 
 export const publicRoutes: RouteObject[] = [
   {
     path: "auth",
     Component: AuthPage,
-    loader: authedUserLoader,
+    loader: indexAuthUserLoader,
   },
   {
     index: true,
     Component: AuthPage,
     loader: indexAuthUserLoader,
-  },
-  {
-    path: "*",
-    loader,
   },
 ];
 
@@ -63,12 +52,18 @@ export const privateRoutes: RouteObject[] = [
 const routes: RouteObject[] = [
   {
     path: "/real-time-chat",
-    Component: NavBar,
-    children: [...publicRoutes, ...privateRoutes],
-  },
-  {
-    path: "*",
-    loader,
+    Component: RouterProviderWrapper,
+    children: [
+      {
+        path: "",
+        Component: NavBar,
+        children: [...publicRoutes, ...privateRoutes],
+      },
+      {
+        path: "*",
+        loader,
+      },
+    ],
   },
 ];
 

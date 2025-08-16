@@ -1,31 +1,27 @@
-import * as styles from "./App.module.scss";
 import { Link, Outlet } from "react-router";
+import styles from "./App.module.scss";
 
-const Platform = () => {
-  console.log("env: ", __ENV__);
-  if (__PLATFORM__ == "desktop") return <div>desktop</div>;
-  if (__PLATFORM__ == "mobile") return <div>mobile</div>;
-};
+function Platform() {
+  if (__PLATFORM__ === "desktop") return <div>desktop</div>;
+  if (__PLATFORM__ === "mobile") return <div>mobile</div>;
+}
 
-const PickMe = () => {
+function PickMe() {
   return (
     <>
       <Platform />
 
-      <div data-testId={"App.DataTestId"} className={styles.main}>
-        <Link to={"about"}>about</Link>
-        <Link to={"shop"}>shop</Link>
-        <Link to={"submit"}>submit</Link>
+      <div data-testId="App.DataTestId" className={styles.main}>
+        <Link to="about">about</Link>
+        <Link to="shop">shop</Link>
+        <Link to="submit">submit</Link>
+        <Link to="real-time-chat">chat</Link>
       </div>
       <Outlet />
     </>
   );
-};
+}
 
-const Loading = () => {
-  return <div>Loading...</div>;
-};
-
-export const App = () => {
+export function App() {
   return <PickMe />;
-};
+}
